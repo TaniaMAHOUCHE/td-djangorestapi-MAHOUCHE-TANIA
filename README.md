@@ -1,0 +1,1 @@
+Ce projet vise à créer une application pour le suivi de projets de recherche, utilisant Django et Django REST Framework. L'application facilitera la gestion des informations détaillées sur les projets de recherche, les chercheurs impliqués, et les publications associées.
