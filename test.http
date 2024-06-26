@@ -1,0 +1,106 @@
+# GET: Liste tous les chercheurs
+GET http://localhost:8000/chercheurs/
+Content-Type: application/json
+
+###
+
+# POST: Créer un nouveau chercheur
+POST http://localhost:8000/add_chercheur/
+Content-Type: application/json
+
+{
+    "nom": "Marc",
+    "specialite": "Physique théorique",
+}
+
+###
+
+# PUT: Mise à jour d'un chercheur by id
+PUT http://localhost:8000/update_chercheur/1/
+Content-Type: application/json
+
+{
+    "nom": "Chercheur John",
+    "specialite": "Sciences"
+}
+
+###
+
+# DELETE: Suppression d'un chercheur 
+DELETE http://localhost:8000/delete_chercheur/1/
+Content-Type: application/json
+
+
+# POST: Créer un projet
+POST http://localhost:8000/add_projet/
+Content-Type: application/json
+
+{
+    "titre": "Nouveau Projet",
+    "description": "New projet.",
+    "date_debut": "2023-07-01",
+    "date_fin": "2024-06-30"
+}
+
+###
+
+# GET: Lister tous les projets
+GET http://localhost:8000/projets/
+Content-Type: application/json
+
+###
+
+# DELETE: Supprimer un projet  
+DELETE http://localhost:8000/delete_projet/1/
+Content-Type: application/json
+
+###
+
+# PUT: Mise à jour un projet spécifique
+PUT http://localhost:8000/update_projet/1/
+Content-Type: application/json
+
+{
+    "titre": "Projet mis à jour",
+    "description": "Description mise à jour du projet.",
+    "date_debut": "2023-07-01",
+    "date_fin": "2024-12-31"
+}
+
+
+# POST: Créer une publication
+POST http://localhost:8000/add_publication/
+Content-Type: application/json
+
+{
+    "titre": "Nouvelle Publication",
+    "contenu": "Contenu de la nouvelle publication.",
+    "date_publication": "2023-07-01",
+    "projet_associe": 1 
+}
+
+###
+
+# GET: Liste de toutes les publications
+GET http://localhost:8000/publications/
+Content-Type: application/json
+
+###
+
+# PUT: Mise à jour d'une publication spécifique 
+PUT http://localhost:8000/update_publication/1/
+Content-Type: application/json
+
+{
+    "titre": "Publication mise à jour",
+    "contenu": "Contenu mis à jour de la publication.",
+    "date_publication": "2023-07-01",
+    "projet_associe": 1  
+}
+
+###
+
+# DELETE: Supprimer une publication 
+DELETE http://localhost:8000/delete_publication/1/
+Content-Type: application/json
+
