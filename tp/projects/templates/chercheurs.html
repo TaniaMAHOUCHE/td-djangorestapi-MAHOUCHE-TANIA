@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Liste des Chercheurs</title>
+</head>
+<body>
+    <h1>Liste des Chercheurs</h1>
+    <ul>
+        {% for chercheur in chercheurs %}
+        <li>
+            {{ chercheur.nom }} - {{ chercheur.specialite }}
+            <a href="{% url 'update_chercheur' chercheur.id %}">Modifier</a> |
+            <a href="{% url 'delete_chercheur' chercheur.id %}">Supprimer</a>
+        </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
