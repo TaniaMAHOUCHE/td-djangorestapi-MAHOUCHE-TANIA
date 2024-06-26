@@ -3,7 +3,7 @@ Ce projet vise à créer une application pour le suivi de projets de recherche, 
 Possibilité de lire, créer, modifier et supprmier les projets, publications et chercheurs.
 
 **Pour installer et exécuter l'application :**  \
-git clone https://github.com/TaniaMAHOUCHE/td-djangorestapi-MAHOUCHE-TANIA.git
+git clone https://github.com/TaniaMAHOUCHE/td-djangorestapi-MAHOUCHE-TANIA.git \
 cd tp
 
 **Pour lancer les migrations:** \
