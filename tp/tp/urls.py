@@ -22,7 +22,8 @@ from projects.views import (
     liste_chercheurs, index, 
     add_chercheur, update_chercheur, delete_chercheur, 
     add_projet, liste_projets, delete_projet, update_projet, 
-    lister_publications, add_publication, update_publication, delete_publication
+    lister_publications, add_publication, update_publication, delete_publication,
+    ListeProjetsRecherche
 )
 
 urlpatterns = [
@@ -36,9 +37,11 @@ urlpatterns = [
     path('delete_chercheur/<int:chercheur_id>/', delete_chercheur, name='delete_chercheur'),  
     
     path('add_projet/', add_projet, name='add_projet'),
-    path('projets/', liste_projets, name='list_projets'),
+    # path('projets/', liste_projets, name='list_projets'),
+    path('projets/', ListeProjetsRecherche.as_view(), name='list_projets'),
     path('delete_projet/<int:pk>/', delete_projet, name='delete_projet'),
     path('update_projet/<int:pk>/', update_projet, name='update_projet'),
+    
     
     path('publications/', lister_publications, name='list-publication'),
     path('add_publication/', add_publication, name='add-publication'),

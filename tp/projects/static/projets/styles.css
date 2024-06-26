@@ -31,11 +31,11 @@ a {
 }
 
 .btn-modifier {
-    background-color: #007bff; /* Bleu */
+    background-color: #007bff; 
 }
 
 .btn-supprimer {
-    background-color: #dc3545; /* Rouge */
+    background-color: #dc3545;
 }
 
 form {

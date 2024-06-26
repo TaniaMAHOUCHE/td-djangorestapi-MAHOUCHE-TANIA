@@ -4,6 +4,7 @@ from .serializers import ProjetDeRechercheSerializer, ChercheurSerializer, Publi
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Chercheur, ProjetDeRecherche, Publication
 from .forms import ChercheurForm, ProjetForm, PublicationForm
+from django.views.generic import ListView
 
 class ProjetDeRechercheListCreate(generics.ListCreateAPIView):
     queryset = ProjetDeRecherche.objects.all()
@@ -29,6 +30,21 @@ class PublicationRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
     queryset = Publication.objects.all()
     serializer_class = PublicationSerializer
     
+class ListeProjetsRecherche(ListView):
+    model = ProjetDeRecherche
+    template_name = 'projets.html' 
+    context_object_name = 'projets'  
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        titre_query = self.request.GET.get('titre', '') 
+        
+        if titre_query:
+            queryset = queryset.filter(titre__icontains=titre_query)
+        
+        return queryset
+
+   
 def liste_chercheurs(request):
     chercheurs = Chercheur.objects.all()
     context = {
@@ -103,7 +119,6 @@ def delete_projet(request, pk):
         return redirect('list_projets') 
     
     return redirect('list_projets')  
-
     
 def update_projet(request, pk):
     projet = get_object_or_404(ProjetDeRecherche, pk=pk)
@@ -122,12 +137,7 @@ def update_projet(request, pk):
     }
     return render(request, 'update_projet.html', context)
 
-def lister_publications(request):
-    publications = Publication.objects.all()
-    context = {
-        'publications': publications
-    }
-    return render(request, 'publications.html', context)
+
 
 def add_publication(request):
     if request.method == 'POST':
@@ -173,3 +183,14 @@ def delete_publication(request, publication_id):
         return redirect('list-publication')  
     
     return redirect('list-publication')  
+
+def lister_publications(request):
+    publications = Publication.objects.all()
+    titre_search = request.GET.get('titre')
+    if titre_search:
+        publications = publications.filter(titre__icontains=titre_search)
+
+    context = {
+        'publications': publications,
+    }
+    return render(request, 'publications.html', context)
