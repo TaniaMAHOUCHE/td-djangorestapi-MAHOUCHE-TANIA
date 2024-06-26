@@ -2,13 +2,12 @@ from rest_framework import generics
 from .models import ProjetDeRecherche, Chercheur, Publication
 from .serializers import ProjetDeRechercheSerializer, ChercheurSerializer, PublicationSerializer
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Chercheur
-from .forms import ChercheurForm
+from .models import Chercheur, ProjetDeRecherche, Publication
+from .forms import ChercheurForm, ProjetForm, PublicationForm
 
-# Create your views here.
 class ProjetDeRechercheListCreate(generics.ListCreateAPIView):
     queryset = ProjetDeRecherche.objects.all()
-    serializer_class = ProjetDeRechercheSerializer
+    serializer_class = ProjetDeRechercheSerializer   
 
 class ProjetDeRechercheRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
     queryset = ProjetDeRecherche.objects.all()
@@ -30,33 +29,22 @@ class PublicationRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
     queryset = Publication.objects.all()
     serializer_class = PublicationSerializer
     
-# def liste_chercheurs(request):
-#     chercheurs = Chercheur.objects.all()
-#     return render(request, 'chercheurs.html', {'chercheurs': chercheurs})
-
-# def chercheurs(request):
-#     return render(request, 'chercheurs.html')
-
 def liste_chercheurs(request):
     chercheurs = Chercheur.objects.all()
     context = {
         'chercheurs': chercheurs
     }
     return render(request, 'chercheurs.html', context)
-
+    
+def liste_projets(request):
+    projets = ProjetDeRecherche.objects.all()
+    return render(request, 'projets.html', {'projets': projets})
+       
 def bonjour(request):
     return render(request, 'bonjour.html')
 
 def index(request):
     return render(request, 'index.html')
-
-
-from django.shortcuts import render, redirect
-from .models import Chercheur
-from .forms import ChercheurForm  
-
-from .models import ProjetDeRecherche
-from .forms import ProjetForm
 
 def add_chercheur(request):
     if request.method == 'POST':
@@ -71,7 +59,6 @@ def add_chercheur(request):
         'form': form
     }
     return render(request, 'add_chercheur.html', context)
-
 
 def update_chercheur(request, chercheur_id):
     chercheur = get_object_or_404(Chercheur, pk=chercheur_id)
@@ -88,13 +75,6 @@ def update_chercheur(request, chercheur_id):
         'form': form
     }
     return render(request, 'update_chercheur.html', context)
-
-# def delete_chercheur(request, chercheur_id):
-#     chercheur = get_object_or_404(Chercheur, pk=chercheur_id)
-#     if request.method == 'POST':
-#         chercheur.delete()
-#         return redirect('list_chercheurs') 
-#     return redirect('list_chercheurs')
 
 def delete_chercheur(request, chercheur_id):
     chercheur = get_object_or_404(Chercheur, pk=chercheur_id)
@@ -114,3 +94,82 @@ def add_projet(request):
         'form': form
     }
     return render(request, 'add_projet.html', context)
+
+def delete_projet(request, pk):
+    projet = get_object_or_404(ProjetDeRecherche, pk=pk)
+    
+    if request.method == 'POST':
+        projet.delete()
+        return redirect('list_projets') 
+    
+    return redirect('list_projets')  
+
+    
+def update_projet(request, pk):
+    projet = get_object_or_404(ProjetDeRecherche, pk=pk)
+    
+    if request.method == 'POST':
+        form = ProjetForm(request.POST, instance=projet)
+        if form.is_valid():
+            form.save()
+            return redirect('list_projets') 
+    else:
+        form = ProjetForm(instance=projet)
+    
+    context = {
+        'form': form,
+        'projet': projet,
+    }
+    return render(request, 'update_projet.html', context)
+
+def lister_publications(request):
+    publications = Publication.objects.all()
+    context = {
+        'publications': publications
+    }
+    return render(request, 'publications.html', context)
+
+def add_publication(request):
+    if request.method == 'POST':
+        form = PublicationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('list-publication')  
+    else:
+        form = PublicationForm()
+    
+    chercheurs = Chercheur.objects.all()
+    
+    context = {
+        'form': form,
+        'chercheurs': chercheurs
+    }
+    return render(request, 'add_publication.html', context)
+
+def update_publication(request, publication_id):
+    publication = get_object_or_404(Publication, pk=publication_id)
+    
+    if request.method == 'POST':
+        form = PublicationForm(request.POST, instance=publication)
+        if form.is_valid():
+            form.save()
+            return redirect('list-publication') 
+    else:
+        form = PublicationForm(instance=publication)
+    
+    chercheurs = Chercheur.objects.all()
+    
+    context = {
+        'form': form,
+        'chercheurs': chercheurs
+    }
+    return render(request, 'update_publication.html', context)
+
+def delete_publication(request, publication_id):
+    publication = get_object_or_404(Publication, pk=publication_id)
+    
+    if request.method == 'POST':
+        publication.delete()
+        return redirect('list-publication')  
+    
+    return redirect('list-publication')  

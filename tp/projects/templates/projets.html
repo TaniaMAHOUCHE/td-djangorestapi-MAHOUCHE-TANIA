@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <title>Liste des Projets de Recherche</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f0f0f0;
+        }
+        h1 {
+            color: #333;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            background: #fff;
+            margin: 10px auto;
+            padding: 10px;
+            border-radius: 5px;
+            width: 60%;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        a {
+            text-decoration: none;
+            color: black;
+            padding: 5px 10px;
+            border-radius: 3px;
+            margin: 0 5px;
+        }
+        .btn-modifier {
+            background-color: Blue;
+            color: white;
+        }
+        .btn-supprimer {
+            background-color: Red; 
+        }
+        form {
+            display: inline;
+        }
+    </style>
+</head>
+<body>
+    <h1>Liste des Projets de Recherche</h1>
+    <ul>
+        {% for projet in projets %}
+            <li>
+                {{ projet.titre }} - {{ projet.description }}
+                <a href="{% url 'update_projet' projet.id %}" class="btn-modifier">Modifier</a>
+                <form action="{% url 'delete_projet' projet.id %}" method="post" class="btn-supprimer">
+                    {% csrf_token %}
+                    <button type="submit">Supprimer</button>
+                </form>
+            </li>
+        {% endfor %}
+    </ul>
+    <a href="{% url 'add_projet' %}">Ajouter un projet</a>
+</body>
+</html>

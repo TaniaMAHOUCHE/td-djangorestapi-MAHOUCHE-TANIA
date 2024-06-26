@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <head>
     <meta charset="UTF-8">
-    <title>Modifier un chercheur</title>
+    <title>Ajouter une publication</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -19,7 +19,10 @@
             border-radius: 5px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
-        input[type="text"], select {
+        label {
+            font-weight: bold;
+        }
+        input[type="text"], textarea, select {
             width: 100%;
             padding: 10px;
             margin: 5px 0;
@@ -41,11 +44,27 @@
     </style>
 </head>
 <body>
-    <h1>Modifier un Chercheur</h1>
+    <h1>Ajouter une publication</h1>
     <form method="post">
         {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Enregistrer les modifications</button>
+        
+        <label for="id_titre">Titre:</label><br>
+        {{ form.titre }}<br><br>
+
+        <label for="id_contenu">Contenu:</label><br>
+        {{ form.contenu }}<br><br>
+
+        <label for="id_date_publication">Date de publication:</label><br>
+        {{ form.date_publication }}<br><br>
+
+        <label for="id_projet_associe">Projet de recherche:</label><br>
+        <select name="projet_associe" id="id_projet_associe">
+            {% for projet in form.projet_associe.field.queryset %}
+                <option value="{{ projet.id }}">{{ projet.titre }}</option>
+            {% endfor %}
+        </select><br><br>
+        
+        <button type="submit">Ajouter</button>
     </form>
 </body>
 </html>

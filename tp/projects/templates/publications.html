@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <title>Liste des publications</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f0f0f0;
+        }
+        h1 {
+            color: #333;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            background: #fff;
+            margin: 10px auto;
+            padding: 10px;
+            border-radius: 5px;
+            width: 60%;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        a {
+            text-decoration: none;
+            color: #007bff;
+            padding: 5px 10px;
+            border-radius: 3px;
+            margin: 0 5px;
+        }
+        form {
+            display: inline;
+            margin-left: 10px;
+        }
+        button {
+            padding: 5px 10px;
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #c82333;
+        }
+    </style>
+</head>
+<body>
+    <h1>Liste des publications</h1>
+    <ul>
+        {% for publication in publications %}
+            <li>
+                <strong>{{ publication.titre }}</strong><br>
+                <em>{{ publication.date_publication }}</em><br>
+                Projet associé: {{ publication.projet_associe.titre }}<br>
+                Contenu: {{ publication.contenu }}<br>
+                
+                <a href="{% url 'update-publication' publication.id %}">Modifier</a>
+                <form action="{% url 'delete-publication' publication.id %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit">Supprimer</button>
+                </form>
+            </li>
+        {% endfor %}
+    </ul>
+    <a href="{% url 'add-publication' %}">Ajouter</a>
+</body>
+</html>
