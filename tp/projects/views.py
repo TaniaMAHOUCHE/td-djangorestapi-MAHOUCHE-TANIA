@@ -5,6 +5,12 @@ from django.shortcuts import render, get_object_or_404, redirect
 from .models import Chercheur, ProjetDeRecherche, Publication
 from .forms import ChercheurForm, ProjetForm, PublicationForm
 from django.views.generic import ListView
+from rest_framework import status
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from django.contrib.auth.models import User
+from rest_framework_simplejwt.tokens import RefreshToken
+from django.contrib.auth import authenticate
 
 class ProjetDeRechercheListCreate(generics.ListCreateAPIView):
     queryset = ProjetDeRecherche.objects.all()
@@ -194,3 +200,47 @@ def lister_publications(request):
         'publications': publications,
     }
     return render(request, 'publications.html', context)
+
+
+class RegisterUser(APIView):
+    def post(self, request):
+        username = request.data.get('username')
+        password = request.data.get('password')
+        
+        if not username or not password:
+            return Response({'error': 'Veuillez fournir à la fois un nom d\'utilisateur et un mot de passe'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        if User.objects.filter(username=username).exists():
+            return Response({'error': 'Ce nom d\'utilisateur est déjà utilisé'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        user = User.objects.create_user(username=username, password=password)
+        refresh = RefreshToken.for_user(user)
+        
+        return Response({
+            'username': user.username,
+            'refresh': str(refresh),
+            'access': str(refresh.access_token),
+        }, status=status.HTTP_201_CREATED)
+def home(request):
+    return render(request, 'home.html')
+
+class LoginUser(APIView):
+    def post(self, request):
+        username = request.data.get('username')
+        password = request.data.get('password')
+        
+        if not username or not password:
+            return Response({'error': 'Veuillez fournir à la fois un nom d\'utilisateur et un mot de passe'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        user = authenticate(username=username, password=password)
+        
+        if not user:
+            return Response({'error': 'Nom d\'utilisateur ou mot de passe incorrect'}, status=status.HTTP_401_UNAUTHORIZED)
+        
+        refresh = RefreshToken.for_user(user)
+        
+        return Response({
+            'username': user.username,
+            'refresh': str(refresh),
+            'access': str(refresh.access_token),
+        }, status=status.HTTP_200_OK)

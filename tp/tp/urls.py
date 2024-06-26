@@ -22,7 +22,7 @@ from projects.views import (
     liste_chercheurs, index, 
     add_chercheur, update_chercheur, delete_chercheur, 
     add_projet, liste_projets, delete_projet, update_projet, 
-    lister_publications, add_publication, update_publication, delete_publication,
+    lister_publications, add_publication, update_publication, delete_publication,home,
     ListeProjetsRecherche
 )
 
@@ -30,6 +30,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('projects.urls')),
     path('', index, name='index'),
+    path('home/', home, name='home'),
     
     path('chercheurs/', liste_chercheurs, name='list_chercheurs'),
     path('add_chercheur/', add_chercheur, name='add_chercheur'),
@@ -47,4 +48,7 @@ urlpatterns = [
     path('add_publication/', add_publication, name='add-publication'),
     path('update_publication/<int:publication_id>/', update_publication, name='update-publication'),
     path('delete_publication/<int:publication_id>/', delete_publication, name='delete-publication'),
+    
+    path('register/', views.RegisterUser.as_view(), name='register'),
+    path('login/', views.LoginUser.as_view(), name='login'),
 ]
